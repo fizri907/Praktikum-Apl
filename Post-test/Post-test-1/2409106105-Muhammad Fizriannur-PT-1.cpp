@@ -4,29 +4,38 @@
 
 using namespace std;
 
-void menuUtama(); // Deklarasi agar bisa dipanggil dalam login()
+int menuUtama(); 
 
-void login() {
+int login() {
     string username, password;
     string userBenar = "Muhammad Fizriannur";
     string passBenar = "2409106105";
+    int attempts = 3; 
 
-    while (true) {
+    while (attempts > 0) {
         cout << "\n===== LOGIN =====\n";
-
-        cout << "Username: ";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Bersihkan buffer sebelum input
+        cout << "Masukkan Username (atau ketik 'exit' untuk keluar): ";
+        cin >> ws;
         getline(cin, username);
 
-        cout << "Password: ";
+        if (username == "exit") {
+            cout << "Keluar dari program.\n";
+            return 0; 
+        }
+
+        cout << "Masukkan Password: ";
         getline(cin, password);
 
         if (username == userBenar && password == passBenar) {
             cout << "Login berhasil! Selamat datang, " << userBenar << "!\n";
-            menuUtama(); // Pindahkan ke menu utama setelah login
-            break;
+            return menuUtama(); 
         } else {
-            cout << "Username atau password salah. Coba lagi.\n";
+            attempts--;
+            cout << "Username atau password salah! Sisa percobaan: " << attempts << "\n";
+            if (attempts == 0) {
+                cout << "Anda telah gagal login 3 kali. Program akan keluar.\n";
+                return 0;
+            }
         }
     }
 }
@@ -48,7 +57,7 @@ float cekInput(string pesan) {
     }
 }
 
-void hitungLuas() {
+float hitungLuas() {
     while (true) {
         cout << "\n===== MENU LUAS =====\n";
         cout << "1. Persegi\n2. Persegi Panjang\n3. Lingkaran\n4. Segitiga\n5. Trapesium\n6. Kembali\n";
@@ -58,44 +67,18 @@ void hitungLuas() {
         cin.ignore();
 
         switch (pilihan) {
-            case 1: {
-                float sisi = cekInput("Masukkan sisi: ");
-                cout << "Luas Persegi: " << sisi * sisi << "\n";
-                break;
-            }
-            case 2: {
-                float p = cekInput("Masukkan panjang: ");
-                float l = cekInput("Masukkan lebar: ");
-                cout << "Luas Persegi Panjang: " << p * l << "\n";
-                break;
-            }
-            case 3: {
-                float r = cekInput("Masukkan jari-jari: ");
-                cout << "Luas Lingkaran: " << M_PI * r * r << "\n";
-                break;
-            }
-            case 4: {
-                float a = cekInput("Masukkan alas: ");
-                float t = cekInput("Masukkan tinggi: ");
-                cout << "Luas Segitiga: " << 0.5 * a * t << "\n";
-                break;
-            }
-            case 5: {
-                float ab = cekInput("Masukkan alas bawah: ");
-                float at = cekInput("Masukkan alas atas: ");
-                float t = cekInput("Masukkan tinggi: ");
-                cout << "Luas Trapesium: " << 0.5 * (ab + at) * t << "\n";
-                break;
-            }
-            case 6:
-                return;
-            default:
-                cout << "Pilihan tidak tersedia.\n";
+            case 1: return pow(cekInput("Masukkan sisi: "), 2);
+            case 2: return cekInput("Masukkan panjang: ") * cekInput("Masukkan lebar: ");
+            case 3: return M_PI * pow(cekInput("Masukkan jari-jari: "), 2);
+            case 4: return 0.5 * cekInput("Masukkan alas: ") * cekInput("Masukkan tinggi: ");
+            case 5: return 0.5 * (cekInput("Masukkan alas bawah: ") + cekInput("Masukkan alas atas: ")) * cekInput("Masukkan tinggi: ");
+            case 6: return 0;
+            default: cout << "Pilihan tidak tersedia.\n";
         }
     }
 }
 
-void hitungKeliling() {
+float hitungKeliling() {
     while (true) {
         cout << "\n===== MENU KELILING =====\n";
         cout << "1. Persegi\n2. Persegi Panjang\n3. Lingkaran\n4. Segitiga\n5. Kembali\n";
@@ -105,38 +88,17 @@ void hitungKeliling() {
         cin.ignore();
 
         switch (pilihan) {
-            case 1: {
-                float sisi = cekInput("Masukkan sisi: ");
-                cout << "Keliling Persegi: " << 4 * sisi << "\n";
-                break;
-            }
-            case 2: {
-                float p = cekInput("Masukkan panjang: ");
-                float l = cekInput("Masukkan lebar: ");
-                cout << "Keliling Persegi Panjang: " << 2 * (p + l) << "\n";
-                break;
-            }
-            case 3: {
-                float r = cekInput("Masukkan jari-jari: ");
-                cout << "Keliling Lingkaran: " << 2 * M_PI * r << "\n";
-                break;
-            }
-            case 4: {
-                float s1 = cekInput("Masukkan sisi pertama: ");
-                float s2 = cekInput("Masukkan sisi kedua: ");
-                float s3 = cekInput("Masukkan sisi ketiga: ");
-                cout << "Keliling Segitiga: " << s1 + s2 + s3 << "\n";
-                break;
-            }
-            case 5:
-                return;
-            default:
-                cout << "Pilihan tidak tersedia.\n";
+            case 1: return 4 * cekInput("Masukkan sisi: ");
+            case 2: return 2 * (cekInput("Masukkan panjang: ") + cekInput("Masukkan lebar: "));
+            case 3: return 2 * M_PI * cekInput("Masukkan jari-jari: ");
+            case 4: return cekInput("Masukkan sisi pertama: ") + cekInput("Masukkan sisi kedua: ") + cekInput("Masukkan sisi ketiga: ");
+            case 5: return 0;
+            default: cout << "Pilihan tidak tersedia.\n";
         }
     }
 }
 
-void menuUtama() {
+int menuUtama() {
     while (true) {
         cout << "\n===== MENU UTAMA =====\n";
         cout << "1. Hitung Luas\n2. Hitung Keliling\n3. Logout\n";
@@ -147,14 +109,14 @@ void menuUtama() {
 
         switch (pilihan) {
             case 1:
-                hitungLuas();
+                cout << "Hasil Luas: " << hitungLuas() << "\n";
                 break;
             case 2:
-                hitungKeliling();
+                cout << "Hasil Keliling: " << hitungKeliling() << "\n";
                 break;
             case 3:
                 cout << "Terima kasih telah menggunakan program ini!\n";
-                return; // Keluar dari menuUtama dan kembali ke main()
+                return 0; 
             default:
                 cout << "Pilihan tidak tersedia.\n";
         }
@@ -162,6 +124,5 @@ void menuUtama() {
 }
 
 int main() {
-    login();
-    return 0;
+    return login();
 }
